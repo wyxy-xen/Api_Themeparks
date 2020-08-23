@@ -1,6 +1,9 @@
 // include the Themeparks library
 const Themeparks = require("themeparks");
 const NameParks = Object.keys(Themeparks.Parks);
+var Park1 = new Themeparks.Parks.DisneylandParisMagicKingdom();
+var Park2 = new Themeparks.Parks.DisneylandParisWaltDisneyStudios();
+
 
 var express = require('express');
 var server = express();
@@ -15,27 +18,22 @@ server.use(bodyParser.json());
 
 
 
+const Park = function(park){
+    if(park == 1)
+    { return Park1; }
+    else if (park == 2)
+    { return Park2; }
+}
+
+
 const getParkList = function(res) {
-    ParkList = NameParks
+    var ParkList = NameParks
     res.send(ParkList);
 };
 
-/* Disneyland Paris
-DisneylandParisMagicKingdom, 6
-DisneylandParisWaltDisneyStudios, 7
-*/
-/*
- Europa
-  EuropaPark, 12
-*/
 
-var CheckWaitTimes = function(ParksId, res) {
-    if(ParksId < 57){
-        var Parks = new Themeparks.Parks[NameParks[ParksId]];
-      //  console.log(ParksId + " | " + NameParks[ParksId]);
-    }else{ return; }
-    
-    Parks.GetWaitTimes().then((rideTimes) => {
+const CheckWaitTimes = function(park, res) {
+    Park(park).GetWaitTimes().then((rideTimes) => {
         var result = []
         rideTimes.forEach((ride) => {    
         var dlp = new class dlp{constructor(name, waitTime,status) { }};
@@ -52,9 +50,9 @@ var CheckWaitTimes = function(ParksId, res) {
 
 
 
-server.get('/api/Themeparks/:ParksId', function (req, res)
+server.get('/api/Themeparks/:Park', function (req, res)
 {  
-    CheckWaitTimes(req.params.ParksId, res);
+    CheckWaitTimes(req.params.Park, res);
 })
 
 server.get('/api/ParkList', function (req, res)
