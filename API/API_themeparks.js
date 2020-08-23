@@ -21,7 +21,7 @@ server.use(bodyParser.json());
 const Park = function(park){
     if(park == 1)
     { return Park1; }
-    else if (park == 2)
+    else
     { return Park2; }
 }
 
